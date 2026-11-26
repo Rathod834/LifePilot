@@ -1,0 +1,28 @@
+
+services:
+  db:
+    image: postgres:16
+    container_name: lifepilot-db
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: lifepilot_db
+      POSTGRES_USER: lifepilot_user
+      POSTGRES_PASSWORD: local_dev_password_change_me
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - lifepilot_postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lifepilot_user -d lifepilot_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  lifepilot_postgres_data:
+  
